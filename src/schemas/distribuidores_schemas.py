@@ -4,6 +4,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, Field
 
 from .paginated_schemas import PaginationMeta
+from pydantic_tooltypes import Partial
 
 
 class NewDistribuidoresRequest(BaseModel):
@@ -14,14 +15,14 @@ class NewDistribuidoresRequest(BaseModel):
     próximo_dia_a_pagar: Optional[date] = None
     dia_estimado_a_pagar: Optional[date] = None
 
-
-class UpdateDistribuidoresRequest(BaseModel):
-    name: Optional[str] = Field(None, min_length=5, max_length=100)
-    description: Optional[str] = Field(None, max_length=500)
-    periodo_en_meses: Optional[int] = Field(None, ge=1, le=12)
-    ultimo_pago_realizado: Optional[date] = None
-    próximo_dia_a_pagar: Optional[date] = None
-    dia_estimado_a_pagar: Optional[date] = None
+UpdateDistribuidoresRequest = Partial[NewDistribuidoresRequest]
+#class UpdateDistribuidoresRequest(BaseModel):
+#    name: Optional[str] = Field(None, min_length=5, max_length=100)
+#    description: Optional[str] = Field(None, max_length=500)
+#    periodo_en_meses: Optional[int] = Field(None, ge=1, le=12)
+#    ultimo_pago_realizado: Optional[date] = None
+#    próximo_dia_a_pagar: Optional[date] = None
+#    dia_estimado_a_pagar: Optional[date] = None
 
 
 

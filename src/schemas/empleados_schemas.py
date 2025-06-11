@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field
 
 from .paginated_schemas import PaginationMeta
 
+from pydantic_tooltypes import Partial
+
 class NewEmpleadoRequest(BaseModel):
     sueldo_empleados_id: int = Field(...,ge=1)
     cantidad: float = Field(...,gt=0)
@@ -13,13 +15,13 @@ class NewEmpleadoRequest(BaseModel):
     dia_de_pago: Optional[date] = None
     notas: Optional[str] = Field('', max_length=500)
 
-
-class UpdateEmpleadoRequest(BaseModel):
-    sueldo_empleados_id: Optional[int] = Field(None, ge=1)
-    cantidad: Optional[float] = Field(None, gt=0)
-    vencimiento: Optional[date] = None
-    dia_de_pago: Optional[date] = None
-    notas: Optional[str] = Field(None, max_length=500)
+UpdateEmpleadoRequest = Partial[NewEmpleadoRequest]
+#class UpdateEmpleadoRequest(BaseModel):
+#    sueldo_empleados_id: Optional[int] = Field(None, ge=1)
+#    cantidad: Optional[float] = Field(None, gt=0)
+#    vencimiento: Optional[date] = None
+#    dia_de_pago: Optional[date] = None
+#    notas: Optional[str] = Field(None, max_length=500)
 
 
 class EmpleadoResponse(BaseModel):

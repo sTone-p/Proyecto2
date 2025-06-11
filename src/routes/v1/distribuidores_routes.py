@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Path, Query
 
 from schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
+from .dependencies import distribuidor_controller
 
 router = APIRouter(
     prefix='/Distribuidores',
@@ -33,31 +34,7 @@ async def get_paginated(
     # TODO: Implementar paginación
     # TODO: Implementar filtros
     # TODO: Implementar tiempo de respuesta
-    return {
-        'results': [
-            {        
-                'id': 1,
-                'name': 'Factura',
-                'description': 'Factura Distribuidor.',
-                'periodo_en_meses': 1,
-                'ultimo_dia_para_pagar': "2025-06-07",
-                'proximo_dia_a_pagar': None,
-                'dia_estimado_a_pagar': "2025-07-01",
-                'pagos': [],
-                'pagos_pendientes': False,
-                'created_at': '2025-07-18T02:18:27Z',
-                'update_at': '2025-07-18T02:18:27Z',
-            }
-        ],
-        'paginacion': {
-            'pagina_actual': page,
-            'total_de_paginas': 5,
-            'total_items': 1,
-            'items_por_pagina': limit,
-            'siguiente_pagina': False,
-            'pagina_anterior': False,
-        }
-    }
+    return await distribuidor_controller.get_paginated(page, limit)
    
 
 
@@ -71,19 +48,7 @@ async def get_paginated(
         }
 )
 async def create(new_distribuidor: NewDistribuidoresRequest) -> DistribuidoresResponses:
-    return {
-        'id': 1,
-        'name': 'Factura',
-        'description': 'Factura Distribuidor.',
-        'periodo_en_meses': 1,
-        'ultimo_dia_para_pagar': "2025-07-01",
-        'proximo_dia_a_pagar': None,
-        'dia_estimado_a_pagar': "2025-07-01",
-        'pagos': [],
-        'pagos_pendientes': False,
-        'created_at': '2025-07-18T02:18:27Z',
-        'update_at': '2025-07-18T02:18:27Z',
-    }
+    return await distribuidor_controller.create(new_distribuidor)
 
 
 @router.get(
@@ -95,20 +60,7 @@ async def create(new_distribuidor: NewDistribuidoresRequest) -> DistribuidoresRe
         }
 )
 async def get_by_id(distribuidores_id: Annotated [int, Path(ge=1, description= 'ID del distribuidor a buscar', title= 'ID del Distribuidor')]) -> DistribuidoresResponses:
-    # TODO implementar busqueda por ID
-    return {
-        'id': distribuidores_id,
-        'name': 'Factura',
-        'description': 'Factura Distribuidor.',
-        'periodo_en_meses': 1,
-        'ultimo_dia_para_pagar': "2025-07-01",
-        'proximo_dia_a_pagar': None,
-        'dia_estimado_a_pagar': "2025-07-01",
-        'pagos': [],
-        'pagos_pendientes': False,
-        'created_at': '2025-07-18T02:18:27Z',
-        'update_at': '2025-07-18T02:18:27Z',
-    }
+    return await distribuidor_controller.get_by_id(distribuidores_id)
 
 
 @router.patch(
@@ -122,27 +74,7 @@ async def get_by_id(distribuidores_id: Annotated [int, Path(ge=1, description= '
 async def update_by_id(
     distribuidores_id: Annotated [int, Path(ge=1, description= 'ID del distribuidor a Actualizar', title= 'ID del Distribuidor')], distribuidor_data: UpdateDistribuidoresRequest
 ) -> DistribuidoresResponses:
-    # TODO Implementar Actualizacion por ID
-    # Campos a recibir
-    # - name: Optional
-    # - description: Optional
-    # - periodo en meses: Optional
-    # - Ultimo dia para pagar: Optional 
-    # - Próximo dia a pagar: Optional
-    # - Dia estimado a pagar: Optional
-    return {
-        'id': distribuidores_id,
-        'name': 'Factura',
-        'description': 'Factura Distribuidor.',
-        'periodo_en_meses': 1,
-        'ultimo_dia_para_pagar': "2025-07-01",
-        'proximo_dia_a_pagar': None,
-        'dia_estimado_a_pagar': "2025-07-01",
-        'pagos': [],
-        'pagos_pendientes': False,
-        'created_at': '2025-07-18T02:18:27Z',
-        'update_at': '2025-07-18T02:18:27Z',
-    }
+    return await distribuidor_controller.update(distribuidores_id)
 
 
 @router.delete(
@@ -155,5 +87,4 @@ async def update_by_id(
     }
 )
 async def delete_by_id(distribuidores_id: Annotated [int, Path(ge=1, description= 'ID del distribuidor a Eliminar', title= 'ID del Distribuidor')]):
-    # TODO Implementar borrado por ID
-    return None
+    return await distribuidor_controller.delete(distribuidores_id)

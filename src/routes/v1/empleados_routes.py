@@ -4,6 +4,8 @@ from fastapi import APIRouter, Query, Path
 
 from schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
 
+from .dependencies import empleado_controller
+
 router = APIRouter(
     prefix='/Pago Empleados',
     responses={
@@ -29,29 +31,7 @@ async def get_paginated(
     page: Annotated[int, Query(ge=1)] = 1,
     limit: Annotated[int, Query(ge=1, le=100)] = 10,
 ) -> EmpleadosPaginatedResponse:
-    return {
-        'results': [
-            {
-                'id': 1,
-                'sueldo_empleados_id': 1,
-                'cantidad': 100.0,
-                'vencimiento': "2025-07-01",
-                'dia_de_pago': "2025-07-01",
-                'estado': 'pagado',
-                'notas': 'Pago transferido',
-                'created_at': '2025-07-18T02:18:27Z',
-                'updated_at': '2025-07-18T02:18:27Z',
-            }
-        ],
-        'paginacion': {
-            'pagina_actual': page,          
-            'total_de_paginas': 1,
-            'total_items': 1,
-            'items_por_pagina': limit,
-            'siguiente_pagina': False,
-            'pagina_anterior': False,
-        }
-    }
+    return await empleado_controller.get_paginated(page, limit)
 
 
 
@@ -65,18 +45,7 @@ async def get_paginated(
         }     
 )
 async def create(new_pago: NewEmpleadoRequest) -> EmpleadoResponse: 
-    return {
-        'id': 1,
-        'sueldo_empleados_id': 1,
-        'cantidad': 100.0,
-        'vencimiento': "2025-07-01",
-        'dia_de_pago': "2025-07-01",
-        'estado': 'pagado',
-        'notas': 'Pago transferido',
-        'created_at': '2025-07-18T02:18:27Z',
-        'updated_at': '2025-07-18T02:18:27Z',
-    }
-
+    return await empleado_controller.get_by_id(new_pago)
 
 @router.get(
         '/{pago_a_empleados_id}',
@@ -87,18 +56,7 @@ async def create(new_pago: NewEmpleadoRequest) -> EmpleadoResponse:
         }  
 )
 async def get_by_id(pago_a_empleados_id: Annotated[int, Path(ge=1, title='ID del pago')]) -> EmpleadoResponse:
-    return {
-        'id': pago_a_empleados_id,
-        'id': 1,
-        'sueldo_empleados_id': 1,
-        'cantidad': 100.0,
-        'vencimiento': "2025-07-01",
-        'dia_de_pago': "2025-07-01",
-        'estado': 'pagado',
-        'notas': 'Pago transferido',
-        'created_at': '2025-07-18T02:18:27Z',
-        'updated_at': '2025-07-18T02:18:27Z',
-    }
+    return await empleado_controller.get_by_id(pago_a_empleados_id)
 
 
 @router.patch(
@@ -114,18 +72,7 @@ async def update_by_id(
     pago_a_empleados_id: Annotated[int, Path(title='ID del pago')],
     pago_data: UpdateEmpleadoRequest,
     ) -> EmpleadoResponse:
-    return {
-        'id': pago_a_empleados_id,
-        'id': 1,
-        'sueldo_empleados_id': 1,
-        'cantidad': 100.0,
-        'vencimiento': "2025-07-01",
-        'dia_de_pago': "2025-07-01",
-        'estado': 'pagado',
-        'notas': 'Pago transferido',
-        'created_at': '2025-07-18T02:18:27Z',
-        'updated_at': '2025-07-18T02:18:27Z',
-    }
+    return await empleado_controller.update_by_id(pago_a_empleados_id)
 
 
 @router.delete(
@@ -138,4 +85,4 @@ async def update_by_id(
         }
 )
 async def delete_by_id(pago_a_empleados_id: Annotated[int, Path(ge=1, title='ID del Pago')]) -> None:
-    return None
+    return await empleado_controller.get_by_id(pago_a_empleados_id)
