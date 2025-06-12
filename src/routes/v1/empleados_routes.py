@@ -72,7 +72,7 @@ async def update_by_id(
     pago_a_empleados_id: Annotated[int, Path(title='ID del pago')],
     pago_data: UpdateEmpleadoRequest,
     ) -> EmpleadoResponse:
-    return await empleado_controller.update_by_id(pago_a_empleados_id)
+    return await empleado_controller.update(pago_a_empleados_id, pago_data)
 
 
 @router.delete(
@@ -85,4 +85,4 @@ async def update_by_id(
         }
 )
 async def delete_by_id(pago_a_empleados_id: Annotated[int, Path(ge=1, title='ID del Pago')]) -> None:
-    return await empleado_controller.get_by_id(pago_a_empleados_id)
+    return await empleado_controller.delete(pago_a_empleados_id)

@@ -74,7 +74,7 @@ async def get_by_id(distribuidores_id: Annotated [int, Path(ge=1, description= '
 async def update_by_id(
     distribuidores_id: Annotated [int, Path(ge=1, description= 'ID del distribuidor a Actualizar', title= 'ID del Distribuidor')], distribuidor_data: UpdateDistribuidoresRequest
 ) -> DistribuidoresResponses:
-    return await distribuidor_controller.update(distribuidores_id)
+    return await distribuidor_controller.update(distribuidores_id, distribuidor_data)
 
 
 @router.delete(

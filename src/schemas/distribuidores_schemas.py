@@ -15,7 +15,9 @@ class NewDistribuidoresRequest(BaseModel):
     próximo_dia_a_pagar: Optional[date] = None
     dia_estimado_a_pagar: Optional[date] = None
 
-UpdateDistribuidoresRequest = Partial[NewDistribuidoresRequest]
+class UpdateDistribuidoresRequest(Partial[NewDistribuidoresRequest]):
+    pass
+
 #class UpdateDistribuidoresRequest(BaseModel):
 #    name: Optional[str] = Field(None, min_length=5, max_length=100)
 #    description: Optional[str] = Field(None, max_length=500)

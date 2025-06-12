@@ -9,13 +9,16 @@ from .paginated_schemas import PaginationMeta
 from pydantic_tooltypes import Partial
 
 class NewEmpleadoRequest(BaseModel):
+    name: str = Field(..., min_length=5, max_length=100)
     sueldo_empleados_id: int = Field(...,ge=1)
     cantidad: float = Field(...,gt=0)
     vencimiento: Optional[date] = None
     dia_de_pago: Optional[date] = None
     notas: Optional[str] = Field('', max_length=500)
 
-UpdateEmpleadoRequest = Partial[NewEmpleadoRequest]
+class UpdateEmpleadoRequest(Partial[NewEmpleadoRequest]):
+    pass
+
 #class UpdateEmpleadoRequest(BaseModel):
 #    sueldo_empleados_id: Optional[int] = Field(None, ge=1)
 #    cantidad: Optional[float] = Field(None, gt=0)
