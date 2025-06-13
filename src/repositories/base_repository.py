@@ -3,8 +3,8 @@ from typing import Dict, List, Any
 from datetime import datetime
 from typing import Type
 
-from database import db_connection
-from database import BaseModel
+from src.database import db_connection
+from src.database import BaseModel
 
 
 

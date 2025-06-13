@@ -1,9 +1,9 @@
 import asyncio 
 import logging
-from schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
+from src.schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
 from typing import List
-from exceptions import app_exceptions as ae 
-from repositories.empleado_repository import EmpleadoRepository
+from src.exceptions import app_exceptions as ae 
+from src.repositories.empleado_repository import EmpleadoRepository
 
 logger = logging.getLogger(__name__)
 

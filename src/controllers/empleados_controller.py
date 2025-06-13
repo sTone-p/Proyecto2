@@ -1,11 +1,11 @@
 import logging
 
-from schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
-from exceptions.server_exceptions import InternalServerError, NotImplemented
-from exceptions.client_exceptions import NotFound
-from exceptions import app_exceptions as ae
-from exceptions.base_http_exception import BaseHTTPException
-from services.empleados_service import EmpleadoService
+from src.schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
+from src.exceptions.server_exceptions import InternalServerError, NotImplemented
+from src.exceptions.client_exceptions import NotFound
+from src.exceptions import app_exceptions as ae
+from src.exceptions.base_http_exception import BaseHTTPException
+from src.services.empleados_service import EmpleadoService
 
 logger = logging.getLogger(__name__)
 

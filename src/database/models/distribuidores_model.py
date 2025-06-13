@@ -2,7 +2,7 @@ from datetime import date
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Date, Integer
-from base_model import BaseModel
+from src.database.models.base_model import BaseModel
 
 class DistribuidoresModel(BaseModel):
     __tablename__ = 'Distribuidores'

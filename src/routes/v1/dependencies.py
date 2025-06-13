@@ -1,7 +1,7 @@
-from controllers.distribuidores_controller import DistribuidorController
-from controllers.empleados_controller import EmpleadoController
-from services.distribuidores_service import DistribuidorService
-from services.empleados_service import EmpleadoService
+from src.controllers.distribuidores_controller import DistribuidorController
+from src.controllers.empleados_controller import EmpleadoController
+from src.services.distribuidores_service import DistribuidorService
+from src.services.empleados_service import EmpleadoService
 
 # Distribuidor Controllers
 distribuidor_service = DistribuidorService()

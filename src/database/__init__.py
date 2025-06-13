@@ -1,6 +1,6 @@
-from config import app_settings
-from database_connection import DataBaseConnection
-from models import BaseModel
+from src.config import app_settings
+from src.database.database_connection import DataBaseConnection
+from src.database.models import BaseModel
 
 
 db_connection = DataBaseConnection(app_settings.DB_CONN)

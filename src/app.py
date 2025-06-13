@@ -1,9 +1,9 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from routes import api_router
+from src.routes import api_router
 from .config.logger import configure_logging
-from database import db_connection, create_tables
+from src.database import db_connection, create_tables
 
 
 @asynccontextmanager

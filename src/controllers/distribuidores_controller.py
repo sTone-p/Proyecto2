@@ -1,11 +1,11 @@
 import logging
 
-from schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
-from exceptions.server_exceptions import InternalServerError, NotImplemented
-from exceptions.client_exceptions import NotFound
-from exceptions import app_exceptions as ae
-from exceptions.base_http_exception import BaseHTTPException
-from services.distribuidores_service import DistribuidorService
+from src.schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
+from src.exceptions.server_exceptions import InternalServerError
+from src.exceptions.client_exceptions import NotFound
+from src.exceptions import app_exceptions as ae
+from src.exceptions.base_http_exception import BaseHTTPException
+from src.services.distribuidores_service import DistribuidorService
 
 logger = logging.getLogger(__name__)
 

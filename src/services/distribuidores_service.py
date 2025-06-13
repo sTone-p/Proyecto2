@@ -1,9 +1,9 @@
 import asyncio 
 import logging
-from schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
+from src.schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
 from typing import List
-from exceptions import app_exceptions as ae 
-from repositories.distribuidor_repository import DistribuidorRepository
+from src.exceptions import app_exceptions as ae 
+from src.repositories.distribuidor_repository import DistribuidorRepository
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
 from typing import List, Dict, Any
 
-from base_repository import BaseRepository
-from helpers.file_helpers import read_json_file, write_json_file
-from config import app_settings
+from src.repositories.base_repository import BaseRepository
+from src.helpers.file_helpers import read_json_file, write_json_file
+from src.config import app_settings
 
 
 #class EmpleadoRepository(BaseRepository):
