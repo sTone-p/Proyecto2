@@ -1,9 +1,13 @@
+import logging
+
 from schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
 from exceptions.server_exceptions import InternalServerError, NotImplemented
 from exceptions.client_exceptions import NotFound
 from exceptions import app_exceptions as ae
 from exceptions.base_http_exception import BaseHTTPException
 from services.distribuidores_service import DistribuidorService
+
+logger = logging.getLogger(__name__)
 
 
 class DistribuidorController():
@@ -12,13 +16,16 @@ class DistribuidorController():
 
     async def get_paginated(self, page: int, limit: int) -> DistribuidoresPaginatedResponse:
         try:
-            return await self.distribuidor_service.get_paginated(page, limit)
+            distribuidores = await self.distribuidor_service.get_paginated(page, limit)
+            logger.debug(f'Encontrados {len(distribuidores)} Distribuidores')
+            return distribuidores
             #raise NotImplemented('Endpoint get paginated not implemented', exception_code='DISTRIBUIDOR_ENDPOINT_NOT_IMPLEMENTED')
         except ae.NotFoundError as ex:
             raise NotFound(ex.message, 'DISTRIBUIDOR_PAGE_NOT_FOUND')
         except BaseHTTPException as ex:    
             raise ex
         except Exception as ex:
+            logger.critical('Error no contemplado en get_paginated')
             raise InternalServerError(
                 message=f'Error al Listar Distribuidores',
                 exception_code= 'DISTRIBUIDOR_UNHANDLED_ERROR'
@@ -31,6 +38,7 @@ class DistribuidorController():
         except BaseHTTPException as ex:
             raise ex
         except Exception as ex:
+           logger.critical('Error no contemplado en create')
            raise InternalServerError(
                 message=f'Error al crear el Distribuidor "{data.name}"',
                 exception_code= 'DISTRIBUIDOR_UNHANDLED_ERROR'
@@ -41,10 +49,12 @@ class DistribuidorController():
             return await self.distribuidor_service.get_by_id(distribuidor_id)
             #raise NotImplemented('Endpoint get paginated not implemented', exception_code='DISTRIBUIDOR_ENDPOINT_NOT_IMPLEMENTED')
         except ae.NotFoundError as ex:
+            logger.error(f'Distribuidor #{distribuidor_id} no encontrado en distribuidor get_by_id')
             raise NotFound(ex.message, 'DISTRIBUIDOR_NOT_FOUND')
         except BaseHTTPException as ex:
             raise ex
         except Exception as ex:
+            logger.critical('Error no contemplado en get_by_id')
             raise InternalServerError(
                 message=f'Error al obtener distribuidor por ID #{distribuidor_id}',
                 exception_code= 'DISTRIBUIDOR_UNHANDLED_ERROR'
@@ -55,10 +65,12 @@ class DistribuidorController():
             return await self.distribuidor_service.update(distribuidor_id, data)
             #raise NotImplemented('Endpoint get paginated not implemented', exception_code='DISTRIBUIDOR_ENDPOINT_NOT_IMPLEMENTED')
         except ae.NotFoundError as ex:
+            logger.error(f'Distribuidor #{distribuidor_id} no encontrado en update_distribuidor')
             raise NotFound(ex.message, 'DISTRIBUIDOR_NOT_FOUND')
         except BaseHTTPException as ex:
             raise ex
         except Exception as ex:
+            logger.critical('Error no contemplado en update')
             raise InternalServerError(
                 message=f'Error al actualizar el distribuidor por ID #{distribuidor_id}',
                 exception_code= 'DISTRIBUIDOR_UNHANDLED_ERROR'
@@ -66,13 +78,15 @@ class DistribuidorController():
 
     async def delete(self, distribuidor_id: int) -> None:
         try:
-            return await self.distribuidor_service.get_delete(distribuidor_id)
+            return await self.distribuidor_service.delete(distribuidor_id)
             #raise NotImplemented('Endpoint get paginated not implemented', exception_code='DISTRIBUIDOR_ENDPOINT_NOT_IMPLEMENTED')
         except ae.NotFoundError as ex:
+            logger.error(f'Distribuidor #{distribuidor_id} no encontrado en delete_distribuidor')
             raise NotFound(ex.message, 'DISTRIBUIDOR_NOT_FOUND')
         except BaseHTTPException as ex:
             raise ex
         except Exception as ex:
+            logger.critical('Error no contemplado en delete')
             raise InternalServerError(
                 message=f'Error al eliminar distribuidor por ID #{distribuidor_id}',
                 exception_code= 'DISTRIBUIDOR_UNHANDLED_ERROR'
