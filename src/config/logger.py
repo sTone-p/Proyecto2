@@ -8,7 +8,7 @@ LOG_FORMAT = '%(asctime)s - %(procces)s - %(name)s - %(levelname)s - %(message)s
 DATE_FORMAT = '%Y-%m-%d'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-def configure_loggin():
+def configure_logging():
     os.makedirs(app_settings.LOG_DIR, exist_ok=True)
     log_filename = f'{app_settings.LOG_DIR}/Gestor_api.log'
 

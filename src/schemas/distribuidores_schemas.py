@@ -37,7 +37,7 @@ class DistribuidoresResponses(BaseModel):
     proximo_dia_a_pagar: Optional[date]
     dia_estimado_a_pagar: Optional[date]
     pagos: list = []
-    pagos_pendientes: bool
+    pagos_pendientes: bool = False
     created_at: datetime
     update_at: datetime
 

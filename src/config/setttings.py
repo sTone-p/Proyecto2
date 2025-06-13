@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     LOG_DIR: str = 'logs'
     DEBUG: bool = False
 
+    # Database
+    PATH_DATA: str = 'database/fake_db.json'
+    DB_CONN: str
+
     # Config Inner class
     class Config: 
         env_file = '.env'

@@ -1,11 +1,14 @@
 import asyncio 
+import logging
 from schemas.empleados_schemas import NewEmpleadoRequest, UpdateEmpleadoRequest, EmpleadoResponse, EmpleadosPaginatedResponse
 from typing import List
 from exceptions import app_exceptions as ae 
+from repositories.empleado_repository import EmpleadoRepository
 
+logger = logging.getLogger(__name__)
 
 class EmpleadoService():
-    def __init__(self, empleado_repo):
+    def __init__(self, empleado_repo: EmpleadoRepository = EmpleadoRepository()):
         self.empleado_repo = empleado_repo
 
     # CRUD
@@ -33,30 +36,32 @@ class EmpleadoService():
         )
     
     async def create(self, data: NewEmpleadoRequest) -> EmpleadoResponse:
-        from datetime import datetime
-        return EmpleadoResponse(
-            id= 1,
-            sueldo_empleados_id= data.sueldo_empleados_id,
-            cantidad= data.cantidad,
-            vencimiento= data.vencimiento,
-            dia_de_pago= data.dia_de_pago,
-            estado= 'pendiente',
-            notas= data.notas,
-            created_at= datetime.now(),
-            updated_at= datetime.now()
-        )
+        logger.debug(f'Creando Empleado: {data}')
+        new_empleado = await self.empleado_repo.create(data.model_dump(mode='json'))
+        logger.debug(f'Empleado creado: {new_empleado}')
+        return new_empleado
     
     async def get_by_id(self, empleado_id: int) -> EmpleadoResponse:
-        raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
-
+        logger.debug(f'Obteniendo empleado por ID: {empleado_id}')
+        empleado = await self.empleado_repo.get_one_by_criteria({'id': empleado_id})
+        if empleado is None:
+            raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
+        return EmpleadoResponse.model_validate(empleado)
+    
     async def update(self, empleado_id: int, data: UpdateEmpleadoRequest) -> EmpleadoResponse:
-        raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
+        logger.debug(f'Actualizando empleado: {data}')
+        empleado = await self.empleado_repo.update_one({'id': empleado_id}, data.model_dump(mode='json', exclude_unset=True))
+        if empleado is None:
+            raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
 
     async def delete(self, empleado_id: int) -> None:
-        raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
+        logger.debug(f'Eliminando empleado: {empleado_id}')
+        deleted = await self.empleado_repo.delete_one({'id': empleado_id})
+        if not deleted:
+            raise ae.NotFoundError(f'El empleado #{empleado_id} no existe')
 
     async def __count(self) -> int:
-        return 0
+        return await self.empleado_repo.count()
     
     async def __get_empleados_list(self, page: int, limit: int) -> List[EmpleadoResponse]:
-        return []
+        return await self.empleado_repo.get_many(page, limit)

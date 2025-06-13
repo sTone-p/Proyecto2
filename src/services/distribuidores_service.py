@@ -1,10 +1,14 @@
 import asyncio 
+import logging
 from schemas.distribuidores_schemas import NewDistribuidoresRequest, UpdateDistribuidoresRequest, DistribuidoresResponses, DistribuidoresPaginatedResponse
 from typing import List
 from exceptions import app_exceptions as ae 
+from repositories.distribuidor_repository import DistribuidorRepository
+
+logger = logging.getLogger(__name__)
 
 class DistribuidorService():
-    def __init__(self, distribuidor_repo):
+    def __init__(self, distribuidor_repo: DistribuidorRepository = DistribuidorRepository):
         self.distribuidor_repo = distribuidor_repo
 
     # CRUD
@@ -32,32 +36,34 @@ class DistribuidorService():
         )
     
     async def create(self, data: NewDistribuidoresRequest) -> DistribuidoresResponses:
-        from datetime import datetime
-        return DistribuidoresResponses(
-            id= 1,
-            name= data.name,
-            description= data.description,
-            periodo_en_meses= data.periodo_en_meses,
-            ultimo_dia_para_pagar= data.ultimo_pago_realizado,
-            proximo_dia_a_pagar= data.próximo_dia_a_pagar,
-            dia_estimado_a_pagar= data.dia_estimado_a_pagar,
-            pagos= [],
-            pagos_pendientes= False,
-            created_at= datetime.now(),
-            update_at= datetime.now(),
-        )
+        logger.debug(f'Creando Distribuidor: {data}')
+        new_distribuidor = await self.distribuidor_repo.create(data.model_dump(mode='json'))
+        logger.debug(f'Distribuidor creado {new_distribuidor}')
+        return DistribuidoresResponses.model_validate(new_distribuidor)
     
     async def get_by_id(self, distribuidor_id: int) -> DistribuidoresResponses:
-        raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        logger.debug(f'Obteniendo Distribuidor por ID: {distribuidor_id}')
+        distribuidor = await self.distribuidor_repo.get_one_by_criteria({'id': distribuidor_id})
+        if distribuidor is None:
+            raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        return DistribuidoresResponses.model_validate(distribuidor)
 
     async def update(self, distribuidor_id: int, data: UpdateDistribuidoresRequest) -> DistribuidoresResponses:
-        raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        logger.debug(f'Actualizando distribuidor: {distribuidor_id} con datos {data}')
+        distribuidor = await self.distribuidor_repo.update_one({'id': distribuidor_id}, data.model_dump(mode='json', exclude_unset=True))
+        if distribuidor is None:
+            raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        return DistribuidoresResponses.model_validate(distribuidor)
 
     async def delete(self, distribuidor_id: int) -> None:
-        raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        logger.debug(f'Eliminando distribuidor: {distribuidor_id}')
+        deleted = await self.distribuidor_repo.delete_one({'id': distribuidor_id})
+        if not deleted:
+            raise ae.NotFoundError(f'El distribuidor #{distribuidor_id} no existe')
+        return None
 
     async def __count(self) -> int:
-        return 0
+        return await self.distribuidor_repo.count()
     
     async def __get_distribuidores_list(self, page: int, limit: int) -> List[DistribuidoresResponses]:
-        return []
+        return await self.distribuidor_repo.get_many(page, limit)

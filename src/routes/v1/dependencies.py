@@ -4,9 +4,9 @@ from services.distribuidores_service import DistribuidorService
 from services.empleados_service import EmpleadoService
 
 # Distribuidor Controllers
-distribuidor_service = DistribuidorService(None)
+distribuidor_service = DistribuidorService()
 distribuidor_controller = DistribuidorController(distribuidor_service)
 
 # Empleado Controllers
-empleado_service = EmpleadoService(None)
+empleado_service = EmpleadoService()
 empleado_controller = EmpleadoController(empleado_service)
