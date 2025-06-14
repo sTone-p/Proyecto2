@@ -3,14 +3,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from src.routes import api_router
 from .config.logger import configure_logging
-from src.database import db_connection, create_tables
+from src.database import db_connection
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     configure_logging()
-    if db_connection.connect():
-        create_tables()
+    db_connection.connect()
     yield
     db_connection.disconnect()
     

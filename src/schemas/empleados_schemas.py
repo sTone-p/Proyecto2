@@ -1,12 +1,10 @@
 from typing import Optional, List
-
 from datetime import date, datetime
 
 from pydantic import BaseModel, Field
+from pydantic_tooltypes import Partial
 
 from .paginated_schemas import PaginationMeta
-
-from pydantic_tooltypes import Partial
 
 class NewEmpleadoRequest(BaseModel):
     name: str = Field(..., min_length=5, max_length=100)
